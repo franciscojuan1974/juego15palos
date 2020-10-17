@@ -9,3 +9,6 @@ Quita uno, quita otro, y el que quita el último palo, pierde.
 Juego popularizado por don Rogelio en el programa de Antena 3 televisión, El Hormiguero.
 
 Se programa la estrategia ganadora
+
+Jugar en: https://ocioalicante.net/juegos/15palos/index.html
+Cómo ganar en: https://ocioalicante.net/blog/2020/10/05/descubre-el-secreto-del-juego-de-los-15-palos-de-don-rogelio/
