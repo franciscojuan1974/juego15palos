@@ -7,3 +7,5 @@ Hay 3 filas de palos, 7, 5 y 3 palos. Quita los palos que quieras de una fila, p
 Quita uno, quita otro, y el que quita el último palo, pierde.
 
 Juego popularizado por don Rogelio en el programa de Antena 3 televisión, El Hormiguero.
+
+Se programa la estrategia ganadora
