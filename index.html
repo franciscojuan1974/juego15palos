@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Juego de los 15 palos del Hormiguero de Antena 3 online</title>
+    <meta name='description'
+        content="Entrénate jugando contra don Rogelio al juego de los 15 palos del Hormiguero de Antena 3 tantas veces quieras hasta que ganes. Recuerda, el que empieza, sabiendo, siempre gana" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1" />
+    <meta name="keywords" content="Ocio, Alicante, España, Spain, Alicante, Teatro Principal de Alicante, conciertos" />
+    <meta name="robots" content="index,follow">
+
+    <meta name="thumbnail" content="https://ocioalicante.net/juegos/15palos/assets/don_rogelio.jpg" />
+    <meta name="theme-color" content="#faebd7" />
+    <link id='rel_canonical' rel="canonical" href="https://ocioalicante.net/juegos/15palos/index.html" />
+
+    <meta property="fb:pages" content="310319865776673" />
+    <meta property="fb:app_id" content="1539364452978108" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ocioalicante.net/juegos/15palos/index.html" />
+    <meta property="og:image" content="https://ocioalicante.net/juegos/15palos/assets/images/don_rogelio.jpg" />
+    <meta property="og:title" content="Juega contra D. Rogelio al juego de los 15 palos del Hormiguero" />
+    <meta property="og:description"
+        content="Entrénate jugando contra don Rogelio al juego de los 15 palos del Hormiguero de Antena 3 tantas veces quieras hasta que ganes. Recuerda, el que empieza, sabiendo, siempre gana" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:description"
+        content="Entrénate jugando contra don Rogelio al juego de los 15 palos del Hormiguero de Antena 3 tantas veces quieras hasta que ganes. Recuerda, el que empieza, sabiendo, siempre gana" />
+    <meta name="twitter:title" content="Juega contra D. Rogelio al juego de los 15 palos del Hormiguero" />
+    <meta name="twitter:site" content="Ocio Alicante" />
+    <meta name="twitter:image" content="https://ocioalicante.net/juegos/15palos/assets/images/don_rogelio.jpg" />
+    <meta name="twitter:creator" content="Ocio Alicante" />
+
+    <style>
+        .palo {
+            background-image: url('assets/images/palo.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            display: inline-block;
+            width: 14%;
+            height: 80px;
+            max-width: 80px;
+        }
+
+        .palo.seleccionado {
+            opacity: 0.5;
+        }
+
+        .palo.cogido {
+            display: none
+        }
+
+        .fila {
+            margin: 5px
+        }
+
+        .fila.cogida {
+            min-height: 84px;
+        }
+
+        body {
+            text-align: center;
+            background-color: black;
+            color: white;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: large;
+            background-color: black;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .jugador {
+            display: inline-block;
+            width: 40%;
+            max-width: 200px;
+            margin: auto;
+        }
+
+        .jugador.activo {
+            border: 2px solid #fff;
+            border-radius: 5px;
+        }
+
+        #vs {
+            display: inline-block;
+            margin: auto;
+        }
+
+        .jugador img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            vertical-align: middle;
+        }
+
+        #tablero {
+            max-width: 500px;
+            margin: auto;
+            padding-top: 15px;
+        }
+
+        #tablero.pierde_jugador1 {
+            max-width: 500px;
+            margin: auto;
+            background-image: url(assets/images/don_rogelio1.jpg);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position-x: center;
+        }
+
+        #tablero.pierde_jugador2 {
+            max-width: 500px;
+            margin: auto;
+            background-image: url(assets/images/einstein1.jpg);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position-x: center;
+        }
+
+        #btns {
+            margin: 10px;
+        }
+
+        #btn_nueva_partida {
+            display: block;
+            margin: auto;
+        }
+
+        #btns_juego {
+            display: none;
+            margin: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            cursor: pointer;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        #estado {
+            margin: 10px;
+            color: rgb(0, 255, 34);
+        }
+
+        #procesando {
+            display: none;
+            margin: 10px;
+        }
+
+        #instrucciones {
+            margin: 10px;
+            font-size: medium
+        }
+
+        #side {
+            display: none;
+            vertical-align: top;
+            margin-left: 5px;
+            padding-left: 5px;
+            border-left: 1px solid white;
+        }
+
+        #main {
+            display: inline-block;
+            background-color: #372b2ba3;;
+        }
+
+        #ad_top {
+            margin-top: 5px;
+            padding-top: 5px;
+        }
+
+        #infoweb {
+            font-size: small;
+            background-color: white;
+            padding: 5px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        #infoweb a {
+            color: black
+        }
+
+        #header {
+            width: 100%;
+            max-width: 510px;
+            text-align: center;
+            border-bottom: 1px solid white;
+        }
+
+        #header__image {
+            position: relative;
+            width: 100%;
+            cursor: pointer;
+            min-height: 78px;
+            background-repeat: repeat-x;
+        }
+
+        #header__logo {
+            position: absolute;
+            margin: 8px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            overflow: hidden
+        }
+
+        #header h1 {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-left: 70px;
+            color: white;
+            font-size: xx-large;
+            font-weight: normal;
+            line-height: 70px;
+            min-width: 190px;
+            text-shadow: -1px -1px 0 #888, 1px -1px 0 #888, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        .acceso {
+            text-align: center;
+            padding: 10px;
+            background-color: black;
+            margin-bottom: 5px;
+        }
+
+        .acceso a {
+            color: white;
+            text-decoration:none;     
+        }
+
+        @media (min-width: 798px) {
+            #side {
+                display: inline-block;
+            }
+            #main{
+                background-color: #000000cf;
+                
+            }
+
+            body{
+                background-image: url(./assets/images/cover.jpg);
+            }
+
+            #ad_top {
+                display: none;
+            }
+
+            #infoweb {
+                text-align: center;
+            }
+        }
+    </style>
+    <link id="css_font-awesome" href="/_fonts/font-awesome-4.6.3/css/font-awesome.min.css?20191014-1" rel="stylesheet"
+        type="text/css" as="style">
+</head>
+
+<body>
+    <div id='container'>
+
+        <div id='main'>
+
+            <header id="header">
+                <div id="header__image" class="header__image"
+                    style="background-image:url(/_imagen/ocioalicante_header_image.png?20181224)">
+                    <div id="header__logo" class="header__logo">
+                        <picture class="header__logo_picture">
+                            <source srcset="/_imagen/ocioalicante_header_logo.png">
+                            <source srcset="/_imagen/ocioalicante_header_logo.png.webp">
+                            <img id="header__logo_picture" srcset="/_imagen/ocioalicante_header_logo.png.webp"
+                                alt="Ocio Alicante" title="Ocio Alicante">
+                        </picture>
+                    </div>
+
+                    <div id="header__title" class="header__title">
+                        <h1>Ocio Alicante</h1>
+                    </div>
+                </div>
+            </header>
+            <div id='ad_top'></div>
+            <h2 id='juego_nombre'>Juego de los 15 palos</h2>
+            <div id='tablero' style='text-align:center'></div>
+
+            <div id='btns'>
+                <div id='btns_juego'>
+                    <button id='btn_quitar' class='btn'>Quitar palos seleccionados</button>
+                </div>
+
+                <button id='btn_nueva_partida' class='btn'>Nueva partida</button>
+            </div>
+
+            <div id='estado'></div>
+            <div id='procesando'><img src='assets/images/cargando.gif' /></div>
+
+            <div id='jugadores'>
+                <div id='jugador1' class='jugador'><img src='assets/images/einstein.jpg' /></div>
+                <div id='vs'>VS</div>
+                <div id='jugador2' class='jugador'><img src='assets/images/don_rogelio.jpg?2020' /></div>
+            </div>
+
+            <div id='instrucciones'>
+                Hay 3 filas de palos, de 7, 5 y 3 palos cada una.<br />
+                Puedes quitar los palos que quieras de una fila<br />
+                Luego yo, luego tu, luego yo...<br />
+                Y el que coja el últmo palo, pierde <br />
+            </div>
+
+            <div id="infoweb">
+                <a href="https://ocioalicante.net"><span class="fa fa-copyright"
+                        title="Copyright Ocio Alicante"></span></a>
+                | <a href="mailto:info@ocioalicante.net"><span class="fa fa-envelope" title="e-mail"></span></a>
+                | <a href="https://www.facebook.com/web.ocioalicante"><span class="fa fa-facebook"
+                        title="Facebook"></span></a>
+                | <a href="/ocioalicante/privacidad.html" title="Política de Privacidad">Privacidad</a>
+                | <a href="/ocioalicante/cookies.html" title="Política de Cookies">Cookies</a>
+            </div>
+        </div>
+        <div id='side'>
+            <div class="acceso">
+                <a href="/blog">INFORMACIÓN Y NOTICIAS</a>
+            </div>
+            <div class="acceso">
+                <a href="/">EVENTOS EN ALICANTE</a>
+            </div>
+            <div id='ad_robapaginas'></div>
+        </div>
+    </div>
+</body>
+<script>
+    let jugador;
+    let fin;
+    let fila_actual;
+    let juego_iniciado = false;
+    let jugadores_nombres = ['Einstein', 'Don Rogelio']
+
+    let inicio_sound = new Audio("assets/sounds/inicio.mp3?20200928");
+    let fin_sound_ganar = new Audio("assets/sounds/fin_ganar.mp3");
+    let fin_sound_perder = new Audio("assets/sounds/fin_perder.mp3");
+    let quitar_sound = new Audio("assets/sounds/quitar.mp3");
+
+    function Tablero() {
+        let filas = new Array(7, 5, 3);
+
+        let html = '';
+        for (let i = 0; i < 3; i++) {
+            html += '<div id="fila' + i + '" class="fila">';
+            for (let j = 0; j < filas[i]; j++) {
+                html += '<div id="palo' + i + "_" + j + '" class="palo"></div>';
+            }
+            html += '</div>';
+        };
+
+        document.getElementById('tablero').innerHTML = html;
+
+        document.querySelectorAll('.palo').forEach((palo) => {
+            palo.addEventListener('click', palo_onClick);
+        });
+    }
+    Tablero();
+
+    function juego_onInicio(no_render) {
+        fin = false;
+        jugador = 0;
+        fila_actual = false;
+
+        if (!no_render) {
+            Tablero();
+            inicio_sound.play();
+        }
+
+        document.getElementById('estado').innerText = 'Te toca: ' + jugadores_nombres[jugador];
+
+        document.getElementById('instrucciones').style.display = 'none';
+        document.getElementById('btn_nueva_partida').style.display = 'none';
+        document.getElementById('btns_juego').style.display = 'block';
+        document.getElementById('vs').style.display = 'hide';
+
+        document.getElementById('jugador1').classList.remove('activo');
+        document.getElementById('jugador2').classList.remove('activo');
+
+        document.getElementById('jugador1').classList.add('activo');
+
+        document.getElementById('tablero').classList.remove('pierde_jugador1');
+        document.getElementById('tablero').classList.remove('pierde_jugador2');
+        juego_iniciado = true;
+    }
+
+    function juego_onFin() {
+        document.getElementById('btn_nueva_partida').style.display = 'block';
+        document.getElementById('btns_juego').style.display = 'none';
+
+        if (jugador == 1) fin_sound_ganar.play();
+        else fin_sound_perder.play();
+    }
+
+    function filas__seleccionar_fila(fila) {
+        let lineas = document.querySelectorAll('.fila');
+        lineas.forEach((fil, i) => {
+            fil.classList.remove('seleccionada');
+        });
+        if (fila) {
+            fila.classList.add('seleccionada');
+            lineas.forEach((fil, i) => {
+                if (fila != fil) {
+                    let palos = fil.querySelectorAll('.palo');
+                    palos.forEach((palo, j) => {
+                        palo.classList.remove('seleccionado');
+                    });
+                }
+            });
+        }
+        fila_actual = fila;
+    }
+
+    function palo_onClick(e) {
+        if (!esta_pensando) {
+            if (!juego_iniciado) juego_onInicio(true);
+            let path = e.path || (event.composedPath && event.composedPath()) || composedPath(event.target);
+            let fila = path[1];
+            if (fila_actual != fila) filas__seleccionar_fila(fila);
+            e.target.classList.contains('seleccionado') ? e.target.classList.remove('seleccionado') : e.target.classList.add('seleccionado');
+        }
+    }
+
+    function finPartida() {
+        let filas = Array.from(document.querySelectorAll('.fila:not(.cogida)'));
+        return (filas.length != 0 ? false : true);
+    }
+
+    function palos__quitar_seleccionados() {
+        let quitados = false;
+        let lineas = document.querySelectorAll('.fila');
+        lineas.forEach((fil, i) => {
+            const palos = document.querySelectorAll('#fila' + i + ' .palo');
+            let hay_palos_en_fila = false;
+            palos.forEach((palo, j) => {
+                if (!palo.classList.contains('cogido')) {
+                    if (palo.classList.contains('seleccionado')) {
+                        palo.classList.remove('seleccionado')
+                        palo.classList.add('cogido');
+                        quitados = true;
+                    }
+                    else hay_palos_en_fila = true;
+                }
+            });
+            if (!hay_palos_en_fila) fil.classList.add('cogida');
+        });
+        return quitados;
+    }
+
+    function fila__seleccionar_palos_menos(fila, num_menos) {
+        let palos = fila.querySelectorAll('.palo:not(.cogido)');
+        let num = palos.length - num_menos;
+        for (let i = 0; i < num; i++) {
+            palos[i].classList.add('seleccionado');
+        }
+    }
+
+    function fila__seleccionar_palos(fila, num) {
+        let palos = fila.querySelectorAll('.palo:not(.cogido)');
+        for (let i = 0; i < num; i++) {
+            palos[i].classList.add('seleccionado');
+        }
+    }
+
+    function filas__seleccionar_palos_azar(filas) {
+        if (filas.length > 0) {
+            let f = Math.floor(Math.random() * filas.length);
+            let palos = filas[f].querySelectorAll('.palo:not(.cogido)');
+            let p = Math.floor(Math.random() * palos.length) + 1;
+            for (let i = 0; i < p; i++) {
+                palos[i].classList.add('seleccionado');
+            }
+        }
+    }
+
+    function fila__get_num_palos(fila) {
+        let palos = fila.querySelectorAll('.palo:not(.cogido)');
+        return palos ? palos.length : 0;
+    }
+
+    function palos__seleccionar_automatico() {
+        if (!fin) {
+            //deseleccionar los palos seleccionados
+            document.querySelectorAll('.palo.seleccionado').forEach((palo) => {
+                palo.classList.remove('seleccionado');
+            });
+            let filas = Array.from(document.querySelectorAll('.fila:not(.cogida)'));
+
+            if (filas.length > 0) {
+                let jugada_ganadora = false;
+
+                //ordenar filas por numero de palos
+                filas = filas.sort((a, b) => {
+                    let palos_a = a.querySelectorAll('.palo:not(.cogido)');
+                    let palos_b = b.querySelectorAll('.palo:not(.cogido)');
+                    return (palos_b.length - palos_a.length);
+                });
+
+                let num_palos = new Array(filas.length);
+                for (let i = 0; i < filas.length; i++) {
+                    num_palos[i] = fila__get_num_palos(filas[i]);
+                }
+                if (filas.length == 1) { //todos si es un palo, todos menos uno si hay más de uno
+                    if (num_palos[0] >= 2) { //combinación ganadora. Todos menos 1
+                        fila = filas[0];
+                        fila__seleccionar_palos_menos(fila, 1);
+                        jugada_ganadora = true;
+                    }
+                    else {   //combinación perdedora. Coger el que queda
+                        fila = filas[0];
+                        fila__seleccionar_palos_menos(fila, 0);
+                    }
+                }
+                else if (filas.length == 2) {
+                    if (num_palos[1] == 1) {
+                        fila__seleccionar_palos(filas[0], num_palos[0]);
+                        jugada_ganadora = true;
+                    }
+                    else if (num_palos[0] != num_palos[1]) { //se gana igualando palos
+                        let dif = num_palos[0] - num_palos[1];
+                        if (dif > 0) fila__seleccionar_palos(filas[0], dif);
+                        else fila__seleccionar_palos(filas[1], -dif);
+                        jugada_ganadora = true;
+                    }
+                    else { //jugada perdedora ... da igual lo que quite
+                        filas__seleccionar_palos_azar(filas);
+                    }
+                }
+                else { // 3 filas
+                    //al comienzo quitar un palo de cualquier fila
+                    if (num_palos[0] == 7 && num_palos[1] == 5 && num_palos[2] == 3) {
+                        let fila = filas[Math.floor(Math.random() * filas.length)];
+                        fila__seleccionar_palos(fila, 1);
+                        jugada_ganadora = true;
+                    }
+                    else {
+                        //si hay líneas iguales, eliminar la fila no igual
+                        if (num_palos[1] > 1 && num_palos[0] == num_palos[1]) {
+                            fila__seleccionar_palos_menos(filas[2], 0);
+                            jugada_ganadora = true;
+                        }
+                        else if (num_palos[1] > 1 && num_palos[0] == num_palos[2]) {
+                            fila__seleccionar_palos_menos(filas[1], 0);
+                            jugada_ganadora = true;
+                        }
+                        else if (num_palos[1] > 1 && num_palos[1] == num_palos[2]) {
+                            fila__seleccionar_palos_menos(filas[0], 0);
+                            jugada_ganadora = true;
+                        }
+                        else {
+                            // jugadas ganadoras:
+                            let jugadas_ganadoras = [
+                                [1, 1, 1],
+                                [3, 2, 1],
+                                [5, 4, 1],
+                                [6, 4, 2]
+                                //,[6, 5, 3]  Ya incluidas en la primera jugada
+                                //[7, 5, 2],
+                                //[7, 4, 3]
+                            ];
+
+                            for (let i = 0; i < jugadas_ganadoras.length && !jugada_ganadora; i++) {
+                                var num_palos_dejar = 0;
+                                var fila_actuar = -1;
+                                var filas_a_jugar = 0;
+                                var jugada = jugadas_ganadoras[i].slice();
+                                for (let j = 0; j < num_palos.length; j++) {
+                                    var pj = jugada.indexOf(num_palos[j]);
+                                    if (pj >= 0) {
+                                        jugada.splice(pj, 1);
+                                    }
+                                }
+                                if (jugada.length == 1) {
+                                    num_palos_dejar = jugada[0];
+                                    for (let j = 0; j < num_palos.length && !jugada_ganadora; j++) {
+                                        if (num_palos[j] > num_palos_dejar) {
+                                            fila__seleccionar_palos_menos(filas[j], num_palos_dejar);
+                                            jugada_ganadora = true;
+                                        }
+                                    }
+                                }
+                            }
+                            if (jugada_ganadora === false) {
+                                filas__seleccionar_palos_azar(filas);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function estado__actualizar() {
+        fin = finPartida();
+        if (!fin) {
+            var jugador_ant = jugador;
+            jugador = ((jugador + 1) % 2);
+
+            if (jugador == 0) estado = 'Te toca: ' + jugadores_nombres[jugador];
+            else estado = 'Jugando: ' + jugadores_nombres[jugador];
+            document.getElementById('jugador' + (jugador_ant + 1)).classList.remove('activo');
+            document.getElementById('jugador' + (jugador + 1)).classList.add('activo');
+
+        }
+        else {
+            estado = jugadores_nombres[jugador] + ' PIERDE';
+            document.getElementById('tablero').classList.add('pierde_jugador' + (jugador + 1));
+            juego_onFin();
+        }
+        document.getElementById('estado').innerHTML = estado;
+    }
+
+    var esta_pensando = false;
+    function pensando(esta) {
+        if (esta) {
+            esta_pensando = true;
+            document.getElementById('btn_quitar').style.display = 'none';
+            document.getElementById('procesando').style.display = 'block';
+        }
+        else {
+            esta_pensando = false;
+            document.getElementById('btn_quitar').style.display = '';
+            document.getElementById('procesando').style.display = '';
+        }
+    }
+
+    function btn_quitar_onClick() {
+        if (!fin) {
+
+            if (jugador == 0) {
+                if (palos__quitar_seleccionados()) {
+                    filas__seleccionar_fila(false);
+                    estado__actualizar();
+                    if (!fin) {
+                        quitar_sound.play();
+                        pensando(true);
+                        setTimeout(function () {
+                            palos__seleccionar_automatico();
+                            setTimeout(function () {
+                                palos__quitar_seleccionados();
+                                filas__seleccionar_fila(false);
+                                estado__actualizar();
+                                pensando(false);
+                                if (!fin) quitar_sound.play();
+                            }, 2000);
+                        }, 2000);
+                    }
+                }
+            }
+        }
+    }
+    document.getElementById('btn_quitar').addEventListener('click', () => {
+        btn_quitar_onClick();
+    });
+
+    function btn_nueva_partida_onclick() {
+        juego_onInicio();
+    }
+
+    document.getElementById('btn_nueva_partida').addEventListener('click', () => {
+        btn_nueva_partida_onclick();
+    });
+
+</script>
+
+
+<!-- GOOGLE ANALYTICS -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-76693141-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-76693141-2');
+</script>
+
+<!-- Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+<script type="text/javascript" async>
+    (function () {
+        var host = window.location.hostname;
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://quantcast.mgr.consensu.org'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js')
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            event.source.postMessage(returnMsg, '*');
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        if (typeof module !== 'undefined') {
+            module.exports = makeStub;
+        } else {
+            makeStub();
+        }
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+
+
+<!-- <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    -->
+<script>
+    if (typeof (__tcfapi) != 'undefined') {
+        __tcfapi('addEventListener', 2, (tcData, success) => {
+            if (success) {
+                if (tcData.eventStatus == 'tcloaded' || tcData.eventStatus == 'useractioncomplete') {
+                    console.log('Quantcast user consent: Ready');
+                    var event = new CustomEvent('quantcast.ready');
+                    document.dispatchEvent(event);
+                }
+            }
+        });
+    }
+
+    function getScript(source, callback) {
+        var script = document.createElement('script');
+        script.async = 1;
+
+        script.onload = script.onreadystatechange = function (event, isAbort) {
+            if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
+                script.onload = script.onreadystatechange = null;
+                script = undefined;
+                if (!isAbort && callback) callback();
+            }
+        };
+
+        script.src = source;
+        var previo = document.getElementsByTagName('script')[0];
+        previo.parentNode.insertBefore(script, previo);
+    }
+
+    document.addEventListener('quantcast.ready', () => {
+        getScript("https://securepubads.g.doubleclick.net/tag/js/gpt.js", () => {
+            window.googletag = window.googletag || { cmd: [] };
+
+            googletag.cmd.push(function () {
+                g_browser_is_mobile = (/Mobile/i.test(navigator.userAgent));
+
+                var ad_top = googletag.sizeMapping().
+                    addSize([0, 0], [[320, 50], [320, 80], [320, 100], 'fluid']).
+                    addSize([360, 0], [[360, 80], [360, 100], 'fluid']).
+                    addSize([400, 0], [[400, 80], [400, 100], 'fluid']).
+                    addSize([510, 0], [[510, 80], [510, 100], 'fluid']).
+                    build();
+
+                var ad_robapaginas = googletag.sizeMapping().
+                    addSize([850, 0], [[300, 250], [336, 280], 'fluid']).
+                    build();
+
+                googletag.slots = [];
+
+                if (g_browser_is_mobile) googletag.slots['ad_top'] = googletag.defineSlot('/53011766/ad_top', [[320, 50], [320, 80], [360, 80], [400, 80], [510, 80], [320, 100], [360, 100], [400, 100], [510, 100], 'fluid'], 'ad_top').defineSizeMapping(ad_top).setCollapseEmptyDiv(true).addService(googletag.pubads());
+                else googletag.slots['ad_robapaginas'] = googletag.defineSlot('/53011766/ad_robapaginas', [[300, 250], 'fluid'], 'ad_robapaginas').defineSizeMapping(ad_robapaginas).setCollapseEmptyDiv(true).addService(googletag.pubads());
+                googletag.pubads().enableSingleRequest();
+
+                googletag.pubads().enableLazyLoad();
+                googletag.enableServices();
+
+                if (g_browser_is_mobile) googletag.display('ad_top');
+                else googletag.display('ad_robapaginas');
+
+                console.log('Google Ads: Ready');
+                var event = new CustomEvent('googleAds.ready');
+                document.dispatchEvent(event);
+            });
+
+            window.addEventListener('resize', function () {
+                if (googletag && googletag.pubads) {
+                    if (!googletag.slotWidth || googletag.slotWidth != window.innerWidth) {
+                        if (googletag.uploadingTimer) clearTimeout(googletag.uploadingTimer);
+                        googletag.uploadingTimer = setTimeout(function () {
+                            googletag.uploadingTimer = null;
+                            googletag.pubads().refresh();
+                            googletag.slotWidth = window.innerWidth;
+                            console.log("Refresh ads. innerWidth=" + window.innerWidth);
+                        }, 250);
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+</html>
